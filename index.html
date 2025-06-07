@@ -1,29 +1,120 @@
 <!--basic html dokument-->
-<!DOCTYPE html> 
-<html lang="en"> 
- <head> 
- <meta charset="UTF-8" /> 
- <title>Vue Template</title> 
+<!DOCTYPE html>
+<html lang="en">
 
- <!-- Import Styles --> 
- <link rel="stylesheet" href="./css/styles.css" /> 
+<head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>Playgrounds</title>
 
- <!-- Import Vue.js --> 
- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> 
-</head> 
-<body> 
- <div id="app"> 
-  <div class="nav-bar"></div> 
-   
-  <h1>{{ intro }}</h1> 
-</div>
+   <!-- Import Bootstrap Styles -->
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous" />
+   <!-- Import Vue.js -->
+   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+   <!-- Import axios.js -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.js"></script>
 
- <!-- Import App --> 
-  <script src="./js/main.js"></script> 
+   <!-- Min egen CSS: -->
+   <link rel="stylesheet" href="css/styles.css" />
 
- <!-- Mount App --> 
-  <script> 
-     const mountedApp = app.mount('#app') 
-  </script> 
- </body> 
+</head>
+
+<body>
+   <!-- Alt Vue-relateret skal indeni denne div -->
+   <div id="app" class="container my-4">
+      <h1 class="text-center border-bottom pb-5 mb-4">{{ intro }}</h1>
+
+      <!-- === Her kommer filter-input'et === -->
+
+      <!-- === Filtrerings-sektion slut === -->
+
+      <!--tabel viser alle observationer-->
+
+      <table class="table table-striped">
+         <thead class="table-dark">
+            <tr>
+               <th>Id</th>
+               <th>Name</th>
+               <th>Max Children</th>
+               <th>MinAge</th>
+               <th>Edit</th>
+               <th>Delete</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr v-for="plg in playGroundsList" :key="plg.id">
+               <td>{{ plg.id }}</td>
+               <td>{{ plg.name }}</td>
+               <td>{{ plg.maxChildren }}</td>
+               <td>{{ plg.minAge }}</td>
+               <td><button class="btn btn-warning btn-sm" @click="showUpdate(plg)">Edit</button></td>
+               <!--<td><button type="button" class="btn btn-danger" @click="deletePig(pig.id)">Delete</button></td>-->
+            </tr>
+            <tr v-if="playGroundsList.length === 0">
+               <td colspan="6" style="font-style: italic;">Ingen Playgrounds at vise</td>
+            </tr>
+         </tbody>
+      </table>
+
+      <!-- Flyttet ind i #app -->
+      <div class="card mt-4 shadow-sm">
+         <h2>Create Play Ground</h2>
+         <form @submit.prevent="addPlg">
+            <div class="mb-3">
+               <label for="name" class="form-label">name</label>
+               <input v-model="name" type="text" class="form-control" id="name" placeholder="name" />
+            </div>
+
+            <div class="mb-3">
+               <label for="maxChildren" class="form-label">maxChildren</label>
+               <input v-model="maxChildren" type="number" class="form-control" id="maxChildren" placeholder="maxChildren" />
+            </div>
+
+            <div class="mb-3">
+               <label for="minAge" class="form-label">MinAge</label>
+               <input v-model="minAge" type="number" class="form-control" id="minAge" placeholder="minAge" />
+            </div>
+
+            <div class="mb-3">
+               <button type="submit" class="btn btn-success">Create Play Ground</button>
+            </div>
+         </form>
+      </div>
+      <!-- Slut på indsat form -->
+
+      <!-- ======== EDIT-FORM ======== -->
+      <div v-if="isEditing" class="card mt-4 shadow-sm">
+         <h2>Rediger playground med id: {{ edithId }}</h2>
+         <form @submit.prevent="submitEdit">
+            <div class="mb-3">
+               <label for="edithName" class="form-label">name</label>
+               <input v-model.number="edithName" id="edithName" type="text" class="form-control" required />
+            </div>
+            <div class="mb-3">
+               <label for="edithMaxChildren" class="form-label">max children</label>
+               <input v-model.number="edithMaxChildren" id="edithMaxChildren" type="number" class="form-control"  required />
+            </div>
+            <div class="mb-3">
+               <label for="edithMinAge" class="form-label">min age</label>
+               <input v-model="edithMinAge" id="edithMinAge" type="number" class="form-control" required />
+            </div>
+            <div class="mb-3">
+               <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+         </form>
+      </div>
+
+
+   </div>
+   <!-- Slut #app -->
+
+   <!-- Import App-logic -->
+   <script src="./js/main.js"></script>
+   <!-- Mount Vue -->
+   <script>
+      const mountedApp = app.mount('#app');
+   </script>
+</body>
+
 </html>
