@@ -49,7 +49,7 @@
                <td>{{ plg.maxChildren }}</td>
                <td>{{ plg.minAge }}</td>
                <td><button class="btn btn-warning btn-sm" @click="showUpdate(plg)">Edit</button></td>
-               <!--<td><button type="button" class="btn btn-danger" @click="deletePig(pig.id)">Delete</button></td>-->
+               <td><button type="button" class="btn btn-danger" @click="deletePig(plg.id)">Delete</button></td>
             </tr>
             <tr v-if="playGroundsList.length === 0">
                <td colspan="6" style="font-style: italic;">Ingen Playgrounds at vise</td>
@@ -101,6 +101,7 @@
             </div>
             <div class="mb-3">
                <button type="submit" class="btn btn-primary">Save Changes</button>
+               <button type="button" class="btn btn-secondary ms-2" @click="cancelEdit">Cancel</button>
             </div>
          </form>
       </div>

@@ -48,9 +48,9 @@ const app = Vue.createApp({
                 maxChildren: this.maxChildren,
                 minAge: this.minAge,
             })
-            .then(response =>{
-                console.log(response)
-                this.statuskode = response.status
+                .then(response => {
+                    console.log(response)
+                    this.statuskode = response.status
                     // Efter succes: hent listen på ny og nulstil felter
                     this.getAll();
                     this.name = "";
@@ -63,10 +63,10 @@ const app = Vue.createApp({
                 })
 
         },
-        showUpdate(plg){
+        showUpdate(plg) {
             this.isEditing = true;
             this.edithId = plg.id;
-            
+
             //til at udfylde felter 
             this.edithName = plg.name;
             this.edithMaxChildren = plg.maxChildren;
@@ -83,10 +83,30 @@ const app = Vue.createApp({
                 .then((response) => {
                     this.statuskode = response.status;
                     this.getAll();
+                    this.cancelEdit();
                 })
                 .catch((error) => {
                     this.statuskode = error.response?.status || "Ukendt fejl";
                 });
+        },
+        cancelEdit() {
+            this.isEditing = false;
+            this.edithName = "";
+            this.edithMaxChildren = null;
+            this.edithMinAge = null;
+        },
+        deletePig(id) {
+            console.log("sletter en playground", id);
+            axios.delete(BaseUri + id)
+                .then(response => {
+                    console.log(response)
+                    this.statuskode = response.status
+                    this.getAll();
+                })
+                .catch(error => {
+                    console.log(error)
+                    this.statuscode = error.response?.status || "Ukendt fejl";
+                })
         },
     },
     //beregner egenskaber 
